@@ -1,0 +1,5 @@
+{
+  "name": "AI確定申告アシスタント",
+  "description": "領収書をアップロードしてAIで自動解析・仕訳を行う、個人事業主向けの確定申告支援ツール",
+  "requestFramePermissions": []
+}
