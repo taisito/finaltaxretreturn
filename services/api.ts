@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 
 import { GAS_WEB_APP_URL, GEMINI_MODEL, API_TOKEN } from '../constants';
+=======
+import { GAS_WEB_APP_URL, GEMINI_MODEL } from '../constants';
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
 import { AnalyzeResult, ReceiptData, DashboardData } from '../types';
 
 /**
@@ -83,7 +87,10 @@ export const analyzeReceipt = async (file: File): Promise<AnalyzeResult> => {
     const base64Image = await fileToBase64(file);
     const payload = {
       action: 'analyze',
+<<<<<<< HEAD
       token: API_TOKEN, // 認証トークン追加
+=======
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
       image: base64Image,
       mimeType: file.type,
       filename: file.name,
@@ -122,11 +129,15 @@ export const registerReceipt = async (data: ReceiptData): Promise<{ success: boo
     }
 
     const action = data.rowIndex ? 'approve' : 'register';
+<<<<<<< HEAD
     const payload = { 
       action, 
       token: API_TOKEN, // 認証トークン追加
       data 
     };
+=======
+    const payload = { action, data };
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
 
     const response = await fetch(GAS_WEB_APP_URL, {
       method: 'POST',
@@ -158,10 +169,14 @@ export const fetchPendingReceipts = async (): Promise<ReceiptData[]> => {
     const response = await fetch(GAS_WEB_APP_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
+<<<<<<< HEAD
       body: JSON.stringify({ 
         action: 'get_pending',
         token: API_TOKEN // 認証トークン追加
       }),
+=======
+      body: JSON.stringify({ action: 'get_pending' }),
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
     });
 
     if (!response.ok) throw new Error("Failed to fetch pending data");
@@ -190,10 +205,14 @@ export const triggerFolderScan = async (): Promise<{ success: boolean; count?: n
     const response = await fetch(GAS_WEB_APP_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
+<<<<<<< HEAD
       body: JSON.stringify({ 
         action: 'scan_folder',
         token: API_TOKEN // 認証トークン追加
       }),
+=======
+      body: JSON.stringify({ action: 'scan_folder' }),
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
     });
 
     const result = await response.json();
@@ -220,10 +239,14 @@ export const fetchDashboardData = async (): Promise<DashboardData> => {
         const response = await fetch(GAS_WEB_APP_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain' },
+<<<<<<< HEAD
             body: JSON.stringify({ 
               action: 'dashboard',
               token: API_TOKEN // 認証トークン追加
             }),
+=======
+            body: JSON.stringify({ action: 'dashboard' }),
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
             signal: controller.signal,
         });
         clearTimeout(timeoutId);
@@ -237,4 +260,8 @@ export const fetchDashboardData = async (): Promise<DashboardData> => {
     console.warn("Dashboard fetch failed (falling back to mock):", error);
     return getMockDashboardData();
   }
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02

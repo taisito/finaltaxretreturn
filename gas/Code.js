@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
 // --- CONFIGURATION ---
 // 以下の値はスクリプトプロパティ(Project Settings > Script Properties)に設定することを推奨します
 // 直接コードに書く場合は、取り扱いに注意してください。
@@ -6,9 +9,15 @@ const PROPS = PropertiesService.getScriptProperties();
 const GEMINI_API_KEY = PROPS.getProperty('GEMINI_API_KEY'); 
 const INPUT_FOLDER_ID = PROPS.getProperty('INPUT_FOLDER_ID');
 const PROCESSED_FOLDER_ID = PROPS.getProperty('PROCESSED_FOLDER_ID');
+<<<<<<< HEAD
 const SPREADSHEET_ID = PROPS.getProperty('SPREADSHEET_ID'); 
 // 認証用トークン (フロントエンドと同じ値を設定してください)
 const API_TOKEN = PROPS.getProperty('API_TOKEN');
+=======
+// 特定のスプレッドシートを指定する場合はIDを設定してください。
+// 未設定の場合は、このスクリプトが紐付いているスプレッドシートを使用します。
+const SPREADSHEET_ID = PROPS.getProperty('SPREADSHEET_ID'); 
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
 
 const MODEL_NAME = 'gemini-2.5-flash';
 
@@ -54,6 +63,7 @@ function debugSetup() {
   console.log("=== 設定確認開始 ===");
   
   // 1. API KEY
+<<<<<<< HEAD
   if (GEMINI_API_KEY) console.log("[OK] GEMINI_API_KEY");
   else console.error("[NG] GEMINI_API_KEY: 未設定");
 
@@ -62,15 +72,31 @@ function debugSetup() {
   else console.warn("[WARN] API_TOKEN: 未設定（セキュリティリスクあり）");
 
   // 3. Folders
+=======
+  if (GEMINI_API_KEY) {
+    console.log("[OK] GEMINI_API_KEY: 設定されています");
+  } else {
+    console.error("[NG] GEMINI_API_KEY: 設定されていません");
+  }
+
+  // 2. Folders
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
   try {
     if (INPUT_FOLDER_ID) {
       const f = DriveApp.getFolderById(INPUT_FOLDER_ID);
       console.log(`[OK] INPUT_FOLDER: ${f.getName()} (アクセス可能)`);
     } else {
+<<<<<<< HEAD
       console.error("[NG] INPUT_FOLDER_ID: 未設定");
     }
   } catch (e) {
     console.error(`[NG] INPUT_FOLDER_ID: ${e.message}`);
+=======
+      console.error("[NG] INPUT_FOLDER_ID: 設定されていません");
+    }
+  } catch (e) {
+    console.error(`[NG] INPUT_FOLDER_ID: アクセスエラー - ${e.message}`);
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
   }
 
   try {
@@ -78,6 +104,7 @@ function debugSetup() {
       const f = DriveApp.getFolderById(PROCESSED_FOLDER_ID);
       console.log(`[OK] PROCESSED_FOLDER: ${f.getName()} (アクセス可能)`);
     } else {
+<<<<<<< HEAD
       console.error("[NG] PROCESSED_FOLDER_ID: 未設定");
     }
   } catch (e) {
@@ -90,6 +117,21 @@ function debugSetup() {
     console.log(`[OK] Spreadsheet: シート「${sheet.getName()}」にアクセス可能`);
   } catch (e) {
     console.error(`[NG] Spreadsheet: ${e.message}`);
+=======
+      console.error("[NG] PROCESSED_FOLDER_ID: 設定されていません");
+    }
+  } catch (e) {
+    console.error(`[NG] PROCESSED_FOLDER_ID: アクセスエラー - ${e.message}`);
+  }
+
+  // 3. Spreadsheet
+  try {
+    const sheet = getSheet();
+    console.log(`[OK] Spreadsheet: シート「${sheet.getName()}」にアクセスできました`);
+  } catch (e) {
+    console.error(`[NG] Spreadsheet: アクセスエラー - ${e.message}`);
+    console.error("  対策: スクリプトプロパティ 'SPREADSHEET_ID' にIDを設定してください。");
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
   }
 
   console.log("=== 確認終了 ===");
@@ -97,6 +139,12 @@ function debugSetup() {
 
 /**
  * 【APIテスト用】
+<<<<<<< HEAD
+=======
+ * エディタから `doPost` を直接実行すると `e` がないためエラーになります。
+ * APIの動作確認をしたい場合は、この `testDoPost` を実行してください。
+ * ダッシュボードデータ取得のリクエストをシミュレートします。
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
  */
 function testDoPost() {
   console.log("🧪 テスト実行: Dashboardデータ取得リクエスト");
@@ -104,8 +152,12 @@ function testDoPost() {
   const mockEvent = {
     postData: {
       contents: JSON.stringify({
+<<<<<<< HEAD
         action: 'dashboard',
         token: API_TOKEN // テスト時もトークンが必要
+=======
+        action: 'dashboard'
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
       })
     }
   };
@@ -122,6 +174,7 @@ function testDoPost() {
 // --- MAIN ENDPOINT ---
 
 function doPost(e) {
+<<<<<<< HEAD
   try {
     if (!e || !e.postData) {
       throw new Error('No postData received.');
@@ -135,6 +188,18 @@ function doPost(e) {
       throw new Error('Unauthorized: Invalid API Token');
     }
 
+=======
+  // CORS対策: プリフライトリクエスト等はGASではdoOptionsがないため、
+  // POSTのレスポンスヘッダで許可を与えるのが一般的
+  
+  try {
+    // eがundefinedの場合（エディタから直接実行など）のガード
+    if (!e || !e.postData) {
+      throw new Error('No postData received. Do not run doPost() directly from the editor. Use testDoPost() instead.');
+    }
+
+    const json = JSON.parse(e.postData.contents);
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
     const action = json.action;
     let result = {};
 
@@ -164,11 +229,16 @@ function doPost(e) {
     return ContentService.createTextOutput(JSON.stringify({
       status: 'success',
       data: result,
+<<<<<<< HEAD
       count: result.count
+=======
+      count: result.count // for scan_folder
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
     })).setMimeType(ContentService.MimeType.JSON);
 
   } catch (error) {
     console.error("doPost Error: " + error.toString());
+<<<<<<< HEAD
     
     // エラー詳細を返しすぎない（セキュリティ対策）
     const errorMessage = error.message.includes('Unauthorized') 
@@ -178,6 +248,11 @@ function doPost(e) {
     return ContentService.createTextOutput(JSON.stringify({
       status: 'error',
       message: errorMessage
+=======
+    return ContentService.createTextOutput(JSON.stringify({
+      status: 'error',
+      message: error.toString()
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
     })).setMimeType(ContentService.MimeType.JSON);
   }
 }
@@ -190,12 +265,15 @@ function doPost(e) {
 function analyzeImage(base64Image, mimeType) {
   if (!GEMINI_API_KEY) throw new Error('GEMINI_API_KEY is not set');
 
+<<<<<<< HEAD
   // 画像サイズチェック（簡易的: Base64の長さで判断）
   // 10MB以上は弾く (約14,000,000文字)
   if (base64Image.length > 14000000) {
     throw new Error('Image size too large');
   }
 
+=======
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`;
   
   const payload = {
@@ -239,6 +317,10 @@ function analyzeImage(base64Image, mimeType) {
   try {
     data = JSON.parse(text);
   } catch (e) {
+<<<<<<< HEAD
+=======
+    // まれにMarkdownコードブロックが含まれる場合があるため除去を試みる
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
     const cleanedText = text.replace(/```json/g, '').replace(/```/g, '');
     data = JSON.parse(cleanedText);
   }
@@ -249,6 +331,10 @@ function analyzeImage(base64Image, mimeType) {
     data.taxAmount = data.amount - data.taxExcluded;
   }
   
+<<<<<<< HEAD
+=======
+  // デフォルト値設定
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
   data.businessRatio = 100;
   data.deductibleAmount = data.amount;
   data.isAsset = data.amount >= 100000;
@@ -257,11 +343,21 @@ function analyzeImage(base64Image, mimeType) {
 }
 
 /**
+<<<<<<< HEAD
  * Driveフォルダをスキャン
  */
 function scanDriveFolder() {
   if (!INPUT_FOLDER_ID) throw new Error('INPUT_FOLDER_ID is not set');
   if (!PROCESSED_FOLDER_ID) throw new Error('PROCESSED_FOLDER_ID is not set');
+=======
+ * Driveフォルダをスキャンして解析・登録・移動する
+ */
+function scanDriveFolder() {
+  console.log("📂 scanDriveFolder: 開始");
+
+  if (!INPUT_FOLDER_ID) throw new Error('INPUT_FOLDER_ID is not set in Script Properties');
+  if (!PROCESSED_FOLDER_ID) throw new Error('PROCESSED_FOLDER_ID is not set in Script Properties');
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
 
   let inputFolder, processedFolder;
   try {
@@ -272,13 +368,20 @@ function scanDriveFolder() {
   }
 
   const files = inputFolder.getFiles();
+<<<<<<< HEAD
   let count = 0;
+=======
+  
+  let count = 0;
+  // タイムアウト防止のため、一度に処理する枚数を制限（例: 3枚）
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
   const MAX_PROCESS = 3;
 
   while (files.hasNext() && count < MAX_PROCESS) {
     const file = files.next();
     const mimeType = file.getMimeType();
     
+<<<<<<< HEAD
     if (mimeType.includes('image/')) {
       try {
         const base64 = Utilities.base64Encode(file.getBlob().getBytes());
@@ -294,15 +397,48 @@ function scanDriveFolder() {
       }
     }
   }
+=======
+    // 画像ファイルのみ対象
+    if (mimeType.includes('image/')) {
+      try {
+        console.log(`Processing file: ${file.getName()}`);
+        const base64 = Utilities.base64Encode(file.getBlob().getBytes());
+        const analysis = analyzeImage(base64, mimeType);
+        
+        // ファイル情報を付与
+        analysis.fileId = file.getId();
+        analysis.driveLink = file.getUrl();
+        
+        // シートに保存 (Status: pending)
+        addToSheet(analysis, 'pending');
+        
+        // 処理済みフォルダへ移動
+        file.moveTo(processedFolder);
+        count++;
+        console.log(`✅ Successfully processed: ${file.getName()}`);
+      } catch (e) {
+        console.error(`❌ Failed to process file ${file.getName()}: ${e.message}`);
+        // エラー時は移動せずスキップ（ログに残す）
+      }
+    }
+  }
+  
+  console.log(`📂 scanDriveFolder: 終了 (処理件数: ${count})`);
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
   return { count: count };
 }
 
 /**
+<<<<<<< HEAD
  * 未承認アイテム取得
+=======
+ * 未承認アイテムを取得
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
  */
 function getPendingItems() {
   const sheet = getSheet();
   const data = sheet.getDataRange().getValues();
+<<<<<<< HEAD
   if (data.length <= 1) return [];
 
   const headers = data[0];
@@ -310,24 +446,49 @@ function getPendingItems() {
   const colMap = {};
   headers.forEach((h, i) => colMap[h] = i);
 
+=======
+  if (data.length <= 1) return []; // ヘッダーのみ
+
+  const headers = data[0];
+  const pendingItems = [];
+
+  // 列インデックスのマップを作成
+  const colMap = {};
+  headers.forEach((h, i) => colMap[h] = i);
+
+  // ステータスがpendingの行を抽出
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
   for (let i = 1; i < data.length; i++) {
     const row = data[i];
     if (row[colMap['Status']] === 'pending') {
       pendingItems.push(rowToObj(row, colMap, i + 1));
     }
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
   return pendingItems;
 }
 
 /**
+<<<<<<< HEAD
  * シートへの追加 (サニタイズ処理付き)
  */
 function addToSheet(data, status) {
   const sheet = getSheet();
+=======
+ * シートへの追加
+ */
+function addToSheet(data, status) {
+  const sheet = getSheet();
+  // UUID生成
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
   const id = Utilities.getUuid();
   
   const rowData = [
     id,
+<<<<<<< HEAD
     sanitize(data.date || ''),
     sanitize(data.storeName || ''),
     Number(data.amount || 0),
@@ -344,6 +505,24 @@ function addToSheet(data, status) {
     sanitize(data.fileId || ''),
     sanitize(data.driveLink || ''),
     new Date()
+=======
+    data.date || '',
+    data.storeName || '',
+    data.amount || 0,
+    data.category || '',
+    JSON.stringify(data.items || []),
+    status,
+    data.invoiceNumber || '',
+    data.taxRate || 10,
+    data.taxExcluded || 0,
+    data.taxAmount || 0,
+    data.businessRatio || 100,
+    data.deductibleAmount || data.amount || 0,
+    data.isAsset ? true : false,
+    data.fileId || '',
+    data.driveLink || '',
+    new Date() // Timestamp
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
   ];
   
   sheet.appendRow(rowData);
@@ -351,18 +530,31 @@ function addToSheet(data, status) {
 }
 
 /**
+<<<<<<< HEAD
  * 行の更新
+=======
+ * 行の更新（承認処理）
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
  */
 function updateRow(data) {
   const sheet = getSheet();
   const rowIndex = data.rowIndex;
   
+<<<<<<< HEAD
   if (!rowIndex || rowIndex < 2) throw new Error('Invalid row index');
+=======
+  if (!rowIndex) throw new Error('Row index is required for update');
+  
+  // 1-based index check
+  const lastRow = sheet.getLastRow();
+  if (rowIndex < 2 || rowIndex > lastRow) throw new Error('Invalid row index');
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
 
   const headers = getHeaders(sheet);
   const colMap = {};
   headers.forEach((h, i) => colMap[h] = i);
 
+<<<<<<< HEAD
   // サニタイズしながらセット
   sheet.getRange(rowIndex, colMap['Date'] + 1).setValue(sanitize(data.date));
   sheet.getRange(rowIndex, colMap['StoreName'] + 1).setValue(sanitize(data.storeName));
@@ -377,10 +569,33 @@ function updateRow(data) {
   sheet.getRange(rowIndex, colMap['BusinessRatio'] + 1).setValue(Number(data.businessRatio));
   sheet.getRange(rowIndex, colMap['DeductibleAmount'] + 1).setValue(Number(data.deductibleAmount));
   sheet.getRange(rowIndex, colMap['IsAsset'] + 1).setValue(Boolean(data.isAsset));
+=======
+  // 簡易的に個別のセルを更新
+  sheet.getRange(rowIndex, colMap['Date'] + 1).setValue(data.date);
+  sheet.getRange(rowIndex, colMap['StoreName'] + 1).setValue(data.storeName);
+  sheet.getRange(rowIndex, colMap['Amount'] + 1).setValue(data.amount);
+  sheet.getRange(rowIndex, colMap['Category'] + 1).setValue(data.category);
+  sheet.getRange(rowIndex, colMap['Items'] + 1).setValue(JSON.stringify(data.items));
+  sheet.getRange(rowIndex, colMap['Status'] + 1).setValue('verified');
+  sheet.getRange(rowIndex, colMap['InvoiceNumber'] + 1).setValue(data.invoiceNumber);
+  sheet.getRange(rowIndex, colMap['TaxRate'] + 1).setValue(data.taxRate);
+  sheet.getRange(rowIndex, colMap['TaxExcluded'] + 1).setValue(data.taxExcluded);
+  sheet.getRange(rowIndex, colMap['TaxAmount'] + 1).setValue(data.taxAmount);
+  sheet.getRange(rowIndex, colMap['BusinessRatio'] + 1).setValue(data.businessRatio);
+  sheet.getRange(rowIndex, colMap['DeductibleAmount'] + 1).setValue(data.deductibleAmount);
+  sheet.getRange(rowIndex, colMap['IsAsset'] + 1).setValue(data.isAsset);
+  // FileID, DriveLinkは変更しない
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
 
   return { success: true };
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * ダッシュボードデータの集計
+ */
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
 function getDashboardData() {
   const sheet = getSheet();
   const data = sheet.getDataRange().getValues();
@@ -393,28 +608,53 @@ function getDashboardData() {
   const categoryDataObj = {};
   const recentReceipts = [];
 
+<<<<<<< HEAD
+=======
+  // verified のみを集計
+  // 逆順ループで最近のデータを取得
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
   for (let i = data.length - 1; i >= 1; i--) {
     const row = data[i];
     if (row[colMap['Status']] !== 'verified') continue;
 
+<<<<<<< HEAD
     const amount = Number(row[colMap['DeductibleAmount']] || row[colMap['Amount']] || 0);
     const dateStr = row[colMap['Date']];
     const category = row[colMap['Category']];
     
     totalAmount += amount;
 
+=======
+    const amount = Number(row[colMap['DeductibleAmount']] || row[colMap['Amount']] || 0); // 経費計上額を使用
+    const dateStr = row[colMap['Date']];
+    const category = row[colMap['Category']];
+    
+    // Total
+    totalAmount += amount;
+
+    // Monthly
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
     const date = new Date(dateStr);
     if (!isNaN(date.getTime())) {
       const monthKey = Utilities.formatDate(date, Session.getScriptTimeZone(), "yyyy-MM");
       monthlyDataObj[monthKey] = (monthlyDataObj[monthKey] || 0) + amount;
     }
+<<<<<<< HEAD
     categoryDataObj[category] = (categoryDataObj[category] || 0) + amount;
 
+=======
+
+    // Category
+    categoryDataObj[category] = (categoryDataObj[category] || 0) + amount;
+
+    // Recent (Top 5)
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
     if (recentReceipts.length < 5) {
       recentReceipts.push(rowToObj(row, colMap, i + 1));
     }
   }
 
+<<<<<<< HEAD
   const monthlyData = Object.keys(monthlyDataObj).sort().map(key => ({
     month: key, amount: monthlyDataObj[key]
   }));
@@ -442,10 +682,39 @@ function sanitize(value) {
 
 function getSheet() {
   let ss;
+=======
+  // Format Monthly Data
+  const monthlyData = Object.keys(monthlyDataObj).sort().map(key => ({
+    month: key,
+    amount: monthlyDataObj[key]
+  }));
+
+  // Format Category Data
+  const categoryData = Object.keys(categoryDataObj).map(key => ({
+    name: key,
+    value: categoryDataObj[key],
+    color: getColorForCategory(key)
+  }));
+
+  return {
+    totalAmount,
+    monthlyData,
+    categoryData,
+    recentReceipts
+  };
+}
+
+// --- HELPERS ---
+
+function getSheet() {
+  let ss;
+  
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
   if (SPREADSHEET_ID) {
     try {
       ss = SpreadsheetApp.openById(SPREADSHEET_ID);
     } catch (e) {
+<<<<<<< HEAD
       console.error(e.message);
     }
   }
@@ -459,6 +728,26 @@ function getSheet() {
   let sheet = ss.getSheetByName('Receipts');
   if (!sheet) {
     sheet = ss.insertSheet('Receipts');
+=======
+      console.error('Failed to open spreadsheet by ID: ' + e.message);
+    }
+  }
+  
+  if (!ss) {
+    // ID未設定の場合は紐付いているシートを試行
+    try {
+      ss = SpreadsheetApp.getActiveSpreadsheet();
+    } catch(e) {
+      // どちらもダメな場合は明確なエラーを投げる
+      throw new Error("スプレッドシートが見つかりません。スクリプトプロパティ 'SPREADSHEET_ID' を設定するか、このスクリプトをスプレッドシートに紐づけてください。");
+    }
+  }
+
+  let sheet = ss.getSheetByName('Receipts');
+  if (!sheet) {
+    sheet = ss.insertSheet('Receipts');
+    // ヘッダー作成
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
     sheet.appendRow([
       'ID', 'Date', 'StoreName', 'Amount', 'Category', 'Items', 'Status', 
       'InvoiceNumber', 'TaxRate', 'TaxExcluded', 'TaxAmount', 
@@ -495,7 +784,15 @@ function rowToObj(row, colMap, rowIndex) {
 }
 
 function parseJSON(str) {
+<<<<<<< HEAD
   try { return JSON.parse(str); } catch (e) { return []; }
+=======
+  try {
+    return JSON.parse(str);
+  } catch (e) {
+    return [];
+  }
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
 }
 
 function formatDate(dateVal) {
@@ -506,10 +803,23 @@ function formatDate(dateVal) {
 }
 
 function getColorForCategory(cat) {
+<<<<<<< HEAD
   const colors = {
     '消耗品費': '#3b82f6', '旅費交通費': '#10b981', '会議費': '#8b5cf6',
     '交際費': '#ec4899', '通信費': '#06b6d4', '水道光熱費': '#eab308',
     '新聞図書費': '#6366f1', '雑費': '#64748b'
+=======
+  // フロントエンドと一致させるための簡易カラーマップ
+  const colors = {
+    '消耗品費': '#3b82f6',
+    '旅費交通費': '#10b981',
+    '会議費': '#8b5cf6',
+    '交際費': '#ec4899',
+    '通信費': '#06b6d4',
+    '水道光熱費': '#eab308',
+    '新聞図書費': '#6366f1',
+    '雑費': '#64748b'
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
   };
   return colors[cat] || '#94a3b8';
 }

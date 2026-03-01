@@ -17,6 +17,7 @@ const getEnvUrl = () => {
   return null;
 };
 
+<<<<<<< HEAD
 const getEnvToken = () => {
   try {
     // @ts-ignore
@@ -30,13 +31,18 @@ const getEnvToken = () => {
   return "demo-token"; // デフォルト値（本番では環境変数を使用すること）
 };
 
+=======
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
 // ここにハードコーディングされたURLをフォールバックとして設定します。
 // Vercel等で環境変数を設定すれば、そちらが優先されます。
 export const GAS_WEB_APP_URL = getEnvUrl() || "";
 
+<<<<<<< HEAD
 // 簡易認証用トークン
 export const API_TOKEN = getEnvToken();
 
+=======
+>>>>>>> 6800949c52c4ae6199464245bb6c8d43804f5c02
 // 使用するGeminiモデル
 // ユーザー指定により gemini-2.5-flash を使用します。
 export const GEMINI_MODEL = 'gemini-2.5-flash';
